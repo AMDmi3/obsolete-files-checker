@@ -1,0 +1,8 @@
+/sbin/devd
+/usr/bin/gperf
+/usr/lib/libstdc++.so
+/usr/lib/libstdc++.so.6
+/usr/share/info/gperf.info.gz
+/usr/share/man/man1/gperf.1.gz
+/usr/share/man/man5/devd.conf.5.gz
+/usr/share/man/man8/devd.8.gz

@@ -1,0 +1,103 @@
+               FreeBSD OptionalObsoleteFiles.inc checker
+              ===========================================
+
+  FreeBSD source tree has a large set of knobs which allow you to disable
+  building and installation of specific parts of the base system - for
+  example, manpages or bind or jail support (see src.conf(5)). While
+  possibility of installing trimmed system is useful, it's sometimes also
+  needed to be able to remove specific parts from alread installed
+  (untrimmed) system. FreeBSD source tree supports this as well through
+  delete-old and delete-old-libs targets, but for them to work properly (e.g.
+  to be able to remove selected parts of the system without leftovers), a
+  list of files is maintained, which specifies what should be removed with
+  each knob set, located in src/tools/build/mk/OptionalObsoleteFiles.inc. As
+  it's maintained by hand, some files are often missing from it, so I wrote
+  this script to make checking and updating it easier.
+
+Description
+===========
+
+  For each knob, the script creates two base system installations in a
+  temporary directory.
+  - First time, the system is installed with the knob set
+  - Second time, the system is installed with no knob set, and then
+    make delete-old delete-old-libs is ran on with with the knob set.
+  Lists of files produced by each phase are compared, and this shows whether
+  there are some files which were not removed by delete-old* and thus should
+  be added to OptionalObsoleteFiles.inc.
+
+Setup
+=====
+
+  First, you may want to change directories which the script will use.
+
+  SRCDIR is a path to FreeBSD source tree (/usr/src by default).
+         You may point it to e.g. git/svn checkout
+  TMPDIR is a temorary directory for object files and world installs.
+         Consider placing it on a fast medium (e.g. tmpfs) for speed.
+         It needs around 2GB of free space (for amd64 system).
+  OUTDIR directory with output files - logs, file lists and lists
+         of leftovers.
+
+  These may be set in file named `config` in the same directory where the
+  script is located. Consider copying `config.example` to `config` and
+  modifying it for your needs.
+
+Usage
+=====
+
+  obsolete-files-checker.sh [-b] [-c] [-i] [knobs ...]
+
+  -b  Force buildworld; normally, world is build only first time the script
+      is run, and then it's reused. Use this options to force it to be
+      rebuild (e.g. when you switched SRCDIR to another branch)
+
+  -c  Remove TMPDIR in the end. This also means that you won't be able to
+      reuse world built in this run
+
+  -i  Incremental mode. This only runs checks on knobs which either were not
+      checked or had leftovers in the previous run.
+
+  next, you may specify the knobs you need to check in the command line. If
+  none are specified, all known knobs are checked.
+
+Output
+======
+
+  For each knob, directory in created in OUTDIR. It'll contain leftovers file
+  with files marked with `+' which are leftovers and files marked with `-'
+  which were likely erroneously deleted and thus should be removed from
+  OptionalObsoleteFiles.inc
+
+  There will also be file makecode with can be added to
+  OptionalObsoleteFiles.inc with some changes.
+
+  The changed which are currently needed include:
+  - Wrapping files under share/lib32 with .if blocks
+  - Changing OLD_FILES to OLD_DIRS for directories
+
+Combined knobs
+==============
+
+  You can check multiple knobs at once by joining them with plus, e.g.
+
+  obsolete-files-checker.sh WITHOUT_SENDMAIL+WITHOUT_MAILWRAPPER
+
+Whitelists
+==========
+
+  Some files should not be removed with make delete-old*, namely configs
+  (as they may be changed by the user). To ignore these while chcking for
+  leftovers, whitelists are introduced (whitelists/ directory). Whitelist
+  name whould match its knob name, inside there's a list of ignored files,
+  comments are also allowed.
+
+License
+=======
+
+  2-clause BSD.
+
+Author
+======
+
+  Dmitry Marakasov <amdmi3@FreeBSD.org>

@@ -1,0 +1,3 @@
+# from WITHOUT_BLUETOOTH
+/etc/bluetooth/hcsecd.conf
+/etc/bluetooth/hosts

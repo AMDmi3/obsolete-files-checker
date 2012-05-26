@@ -1,0 +1,8 @@
+# Path to FreeBSD source tree; may use e.g. svg/git checkout here
+SRCDIR=/usr/src
+
+# Directory for temporary data (consider using tmpfs for speed; needs ~2GB)
+TMPDIR=/tmp/obsolete-files-checker
+
+# Directory to store output data in
+OUTDIR=/tmp/obsolete-files.out

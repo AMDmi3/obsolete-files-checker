@@ -1,0 +1,4 @@
+# from WITHOUT_LIBTHR
+/var/named/etc/namedb/named.conf
+/var/named/etc/namedb
+/var/named/etc

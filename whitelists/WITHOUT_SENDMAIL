@@ -1,0 +1,7 @@
+/etc/mail/freebsd.cf
+/etc/mail/freebsd.mc
+/etc/mail/freebsd.submit.cf
+/etc/mail/freebsd.submit.mc
+/etc/mail/sendmail.cf
+/etc/mail/submit.cf
+/var/log/sendmail.st

@@ -1,0 +1,5 @@
+# from WITHOUT_BIND_ETC
+/var/named/etc/namedb/named.conf
+# from WITHOUT_BIND_MTREE
+/var/named/etc/namedb
+/var/named/etc

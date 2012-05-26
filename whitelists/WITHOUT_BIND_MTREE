@@ -1,0 +1,5 @@
+# from WITHOUT_BIND_ETC
+/var/named/etc/namedb/named.conf
+# directories hosting it
+/var/named/etc/namedb
+/var/named/etc
