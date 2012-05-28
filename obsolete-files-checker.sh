@@ -291,7 +291,7 @@ for knob in $all_knobs; do
 	echo "====> Modified installworld ($env)..."
 	mkdir -p "$DESTDIR" || fatal "Cannot create DESTDIR!"
 	cd "$SRCDIR" || fatal "Cannot cd into SRCDIR!"
-	env $env make installworld distribution > "$this_outdir/installworld.modified.log" 2>&1 || fatal "installworld failed!"
+	time env $env make installworld distribution > "$this_outdir/installworld.modified.log" 2>&1 || fatal "installworld failed!"
 
 	echo "====> Gathering file lists..."
 	cd "$DESTDIR" || fatal "Cannot cd into DESTDIR!"
@@ -306,11 +306,11 @@ for knob in $all_knobs; do
 	echo "====> Default installworld..."
 	mkdir -p "$DESTDIR" || fatal "Cannot create DESTDIR!"
 	cd "$SRCDIR" || fatal "Cannot cd into SRCDIR!"
-	make installworld distribution > "$this_outdir/installworld.default.log" 2>&1 || fatal "installworld failed!"
+	time make installworld distribution > "$this_outdir/installworld.default.log" 2>&1 || fatal "installworld failed!"
 
 	echo "====> Running delete-old..."
 	cd "$SRCDIR" || fatal "Cannot cd into SRCDIR!"
-	env $env BATCH_DELETE_OLD_FILES=yes make delete-old delete-old-libs > "$this_outdir/delete-old.log" 2>&1 || fatal "make delete-old delete-old-libs failed"
+	time env $env BATCH_DELETE_OLD_FILES=yes make delete-old delete-old-libs > "$this_outdir/delete-old.log" 2>&1 || fatal "make delete-old delete-old-libs failed"
 
 	echo "====> Gathering file lists..."
 	cd "$DESTDIR" || fatal "Cannot cd into DESTDIR!"
